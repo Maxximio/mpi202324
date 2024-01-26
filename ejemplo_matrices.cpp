@@ -9,8 +9,9 @@ void matrix_mult(double*A,double*b,double*c,int rows,int cols){
     for(int i=0;i<rows,i++){
         double tmp;
         for(int j=0; j<cols;j++){
-            //revisar
+            tmp=tmp +A[i*cols+j]*b[j];
         }
+        c[i]=tmp;
     }
 }
 
