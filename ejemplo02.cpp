@@ -1,64 +1,42 @@
-#include<iostream>
-#include<mpi.h>
+#include <iostream>
+#include <vector>
+#include <mpi.h>
 
-int main(int argc, char** argv){
+#define MAX_ELEMENTOS 1024
 
-    MPI_Init(&argc,&argv);
+int main(int argc, char *argv[]) {
+    MPI_Init(&argc, &argv);
 
-    int rank, nprocs;
-
+    int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
-    
-  //  std::printf("Rank %d of %d process \n",rank,nprocs);
-    
-    int data[100];
-    
-    if(rank == 0){
-        std::printf("Total de ranks: %d", nprocs);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-        for(int i=0;i<100;i++){
-            data[i]=i;
+    std::vector<int> input(MAX_ELEMENTOS);
+
+    if (rank == 0) {
+        for (int i = 0; i < MAX_ELEMENTOS; i++) {
+            input[i] = i + 1;
         }
+    }
 
+    // Broadcast input vector to all processes
+    MPI_Bcast(input.data(), MAX_ELEMENTOS, MPI_INT, 0, MPI_COMM_WORLD);
 
-        for(int i=1;i<nprocs; i++){
-            std::printf("\n Rank_0 Enviando datos a rank_%d \n",i);
-            MPI_Send(
-                data, //datos
-                100, //cuantos datos
-                MPI_INT, //tipo de dato
-                i, // rank destino
-                0, //tag
-                MPI_COMM_WORLD); //grupo
+    int local_sum = 0;
 
-        }
+    // Calculate local sum
+    for (int i = rank; i < MAX_ELEMENTOS; i += size) {
+        local_sum += input[i];
+    }
 
+    // Reduce local sums to get the global sum
+    int global_sum;
+    MPI_Reduce(&local_sum, &global_sum, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
-    }else if(rank==1){
-
-        std::printf("\nRank %d Recibiendo datos ",rank);
-
-        MPI_Recv(
-            data, //datos
-            100, //cuantos
-            MPI_INT, //tipo de dato
-            0, //rank - origen
-            0, //tag
-            MPI_COMM_WORLD, //grupo
-            MPI_STATUS_IGNORE); //status
-
-        std::string str="";
-        
-        for(int i=0;i<10;i++){
-            //std::printf("%d, ",data[i]);
-            str = str + std::to_string(data[i])+",";
-                    std::printf("\nRank_%d recibiendo datos ===> %d",rank,data[i]);
-        }
-
+    if (rank == 0) {
+        std::printf("La suma es: %d\n", global_sum);
     }
 
     MPI_Finalize();
-
     return 0;
 }
