@@ -33,8 +33,8 @@ int main(int argc, char** argv) {
         std::cout << "número: " << i << " -> " << contador[i] << std::endl;
     }*/
 
-    for(int i=0;i<datos.size();i++){
-        std::cout << "número: " << datos[i] << " "<< std::endl;
+    for(int i=0;i<10;i++){
+        std::cout << "número: " << datos[i] << std::endl;
     }
 
     return 0;
