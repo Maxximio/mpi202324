@@ -8,10 +8,12 @@ sudo apt-get install libopenmpi-dev
 mpiexec --version
 
 compilar:
-mpicxx ejemplo02.cpp -o ejemplo02
+mpicxx pr2.cpp -o pr2
 
 ejecutar:
 mpiexec -n 4 ejemplo02
+
+mpiexec -n 4 ./pr2
 
 ///////////////////////////////////////////Funciones MPI/////////////////////////////////////////////////
 
