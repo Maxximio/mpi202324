@@ -57,6 +57,7 @@ int main(int argc, char** argv) {
         A.resize(elements_per_process, 0);
     }
 
+
     MPI_Scatter(A.data(), elements_per_process, MPI_FLOAT, A.data(), elements_per_process, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
     C = multiplication(A, B);
