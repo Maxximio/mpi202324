@@ -39,6 +39,7 @@ int main(int argc, char** argv) {
         imagen= generar_imagen();
 
         elementos=imagen.size();
+        
         real_size=std::ceil((double)elementos/nprocs)*nprocs;
         padding=real_size-elementos;
         block_size = real_size/ nprocs;
