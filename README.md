@@ -8,12 +8,12 @@ sudo apt-get install libopenmpi-dev
 mpiexec --version
 
 compilar:
-mpicxx recuperacion.cpp -o recuperacion
+mpicxx fim.cpp -o fim
 
 ejecutar:
-mpiexec -n 4 recuperacion
+mpiexec -n 4 fim
 
-mpiexec -n 4 ./recuperacion
+mpiexec -n 4 ./fim
 
 ///////////////////////////////////////////Funciones MPI/////////////////////////////////////////////////
 
